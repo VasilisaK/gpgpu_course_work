@@ -30,7 +30,7 @@ public:
 	ParticleSystem(double SourceCoordX_1_inp, double SourceCoordY_1_inp, double SourceCoordX_2_inp, double SourceCoordY_2_inp, double dt_inp, double Life_inp, double BasketLevel_inp, int ParticlesInBasket_inp);
 	void InitSystem(double Vx, double Vy, float r_1_inp, float g_1_inp, float b_1_inp, double Life_1_inp, float r_2_inp, float g_2_inp, float b_2_inp, double Life_2_inp);
 	void UpdateSystem(Geometry Geom);
-	GLfloat* GetSystem();
+	void GetSystem(GLfloat* vertices);
 	std::vector<double> GetColor();
 	double GetLifetime() { return Life; };
 	int GetParticlesInBasketNeeded(){ return ParticlesInBasketNeeded; };

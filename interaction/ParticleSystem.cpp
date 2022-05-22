@@ -139,15 +139,13 @@ std::vector<double> ParticleSystem::GetColor() {
 	return Colors;
 }
 
-GLfloat* ParticleSystem::GetSystem() {
-	static GLfloat vertices[4 * MAX_PARTICLES];
+void ParticleSystem::GetSystem(GLfloat* vertices) {
 	for (int i = 0; i < MAX_PARTICLES; ++i) {
 		vertices[i * 2] = float(particles[i].GetCoords()[0]);
 		vertices[i * 2 + 1] = float(particles[i].GetCoords()[1]);
 		vertices[2 * MAX_PARTICLES + i * 2] = float(particles_type2[i].GetCoords()[0]);
 		vertices[2 * MAX_PARTICLES + i * 2 + 1] = float(particles_type2[i].GetCoords()[1]);
 	}
-	return vertices;
 }
 
 ParticleSystem::~ParticleSystem() {
