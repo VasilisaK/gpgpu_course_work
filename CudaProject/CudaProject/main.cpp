@@ -1,21 +1,10 @@
 #include "kernel.cuh"
 
-/*
-int main() {
-	Calc();
-	return 0;
-}
-*/
-
-// #include "ParticleSystem.h"
+#include "ParticleSystem.h"
 
 #include <fstream>
 #include <iomanip>
 
-//#include "Functions.h"
-
-// #include <../../../opengl/glew.h>
-// #include <../../../opengl/freeglut.h>
 
 double Time = 200000;
 double CurrTime = 0;
@@ -69,6 +58,8 @@ void DisplayScene() {
 	glColor3f(0.0, 1.0, 0.0);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
+
+	Particle* particles;
 
 	// draw a cube
 	glDrawArrays(GL_POINTS, 0, MAX_PARTICLES);
@@ -127,6 +118,12 @@ void DisplayScene() {
 
 		//// deactivate vertex arrays after drawing
 		glDisableClientState(GL_VERTEX_ARRAY);
+
+		PlayingSystem.GetParticles(particles);
+
+		Calc(particles);
+
+		PlayingSystem.SetParticles(particles);
 
 		PlayingSystem.UpdateSystem(Geom);
 
