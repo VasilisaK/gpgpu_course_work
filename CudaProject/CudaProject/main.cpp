@@ -1,5 +1,3 @@
-#include "kernel.cuh"
-
 #include "ParticleSystem.h"
 
 #include <fstream>

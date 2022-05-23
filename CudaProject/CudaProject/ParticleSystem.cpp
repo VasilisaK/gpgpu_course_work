@@ -1,5 +1,6 @@
 #include "ParticleSystem.h"
 #include "Functions.h"
+#include "kernel.cuh"
 
 
 ParticleSystem::ParticleSystem() {
@@ -86,6 +87,7 @@ void ParticleSystem::UpdateSystem(Geometry Geom) {
 
 	}
 */
+	Calc(particles, Geom, MAX_PARTICLES);
 	// Checking wall interaction for 2nd-type particles
 	for (i = 0; i < MAX_PARTICLES; ++i) {
 

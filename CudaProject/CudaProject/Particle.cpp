@@ -80,6 +80,7 @@ Particle::Particle() {
 	Lifetime = 0;
 }
 
+
 Particle::Particle(double XCoord_inp, double YCoord_inp, double VX_inp, double VY_inp, float r_inp, float g_inp, float b_inp, double Life_inp) {
 	XCoord = XCoord_inp;
 	YCoord = YCoord_inp;

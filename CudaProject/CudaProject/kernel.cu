@@ -11,7 +11,6 @@
 
 #include "ParticleSystem.h"
 
-#define N 256
 
 // Kernel Definition
 __global__ void iter(Particle* p, Geometry g, int n)
@@ -24,7 +23,7 @@ __global__ void iter(Particle* p, Geometry g, int n)
 	double dt = 1;
 	int BasketCounter = 0;
 
-	int i = threadIdx.x;
+	int i = blockDim.x * blockIdx.x + threadIdx.x;
 
 	if (i < n) {
 		
@@ -48,7 +47,7 @@ __global__ void iter(Particle* p, Geometry g, int n)
 	}
 }
 
-void Calc(Particle* h_a) {
+void Calc(Particle* h_a, Geometry g, int n) {
 
 	int i, j;
 	double NewXCoord, NewYCoord, NewVX, NewVY;
@@ -61,34 +60,24 @@ void Calc(Particle* h_a) {
 
 	// Allocate arrays in Device memory
 	Particle* d_a;
-	Geometry g;
-	
-	cudaMalloc((void**)&d_a, MAX_PARTICLES * sizeof(Particle));
-//	cudaMalloc((void)geom, sizeof(Geometry));
+	size_t size= BLOCKS_NUMBER*THREADS_NUMBER*sizeof(Particle);
+
+	cudaMalloc(&d_a, size);
 
 	// Copy memory from Host to Device
-	cudaMemcpy(d_a, h_a, MAX_PARTICLES * sizeof(Particle), cudaMemcpyHostToDevice);
+	cudaMemcpy(d_a, h_a, size, cudaMemcpyHostToDevice);
 //	cudaMemcpy(g, geom, sizeof(Geometry), cudaMemcpyHostToDevice);
 
 	// Block and Grid dimentions
-	dim3 grid_size(1); dim3 block_size(N);
-
+	
+	iter<<<BLOCKS_NUMBER,THREADS_NUMBER>>>(dev_classarray);
 	// Launch Kernel
-	iter << <grid_size, block_size >> > (d_a, g, N);
+	iter << <grid_size, block_size >> > (d_a, g, n);
 
 	// Some kind of synchronization
 	cudaDeviceSynchronize();
 
-	cudaMemcpy(h_a, d_a, N * sizeof(int), cudaMemcpyDeviceToHost);
-
-
-	for (int i = 0; i < 10; ++i) {
-		//		printf("c[%d] = %d\n", i, h_a[i]);
-		//		printf("c[%d] = %d\n", i, h_b[i]);
-		std::cout << "h_a: c[" << i << "] = " << h_a[i] << "\n";
-
-	}
-
+	cudaMemcpy(h_a, d_a, size, cudaMemcpyDeviceToHost);
 
 
 //	free(h_a);
@@ -96,69 +85,3 @@ void Calc(Particle* h_a) {
 
 	//	return 0;
 }
-
-/*
-// Kernel Definition
-__global__ void iter(int* a, int* b, int n)
-{
-	int i = threadIdx.x;
-	if (i < n) {
-		a[i] = a[i] * 2;
-		b[i] = a[i] + 1;
-	}
-}
-
-//void CalcFunction();
-
-// int main() {
-void Calc() {
-
-	int* h_a;
-	int* h_b;
-	// Allocate host memory
-	h_a = (int*)malloc(sizeof(int) * N);
-	h_b = (int*)malloc(sizeof(int) * N);
-
-	// Initialize host array
-	for (int i = 0; i < N; i++) {
-		h_a[i] = i;
-		h_b[i] = i;
-	}
-
-	// Allocate arrays in Device memory
-	int* d_a;
-	int* d_b;
-	cudaMalloc((void**)& d_a, N * sizeof(int));
-	cudaMalloc((void**)& d_b, N * sizeof(int));
-
-	// Copy memory from Host to Device
-	cudaMemcpy(d_a, h_a, N * sizeof(int), cudaMemcpyHostToDevice);
-	cudaMemcpy(d_b, h_b, N * sizeof(int), cudaMemcpyHostToDevice);
-
-	// Block and Grid dimentions
-	dim3 grid_size(1); dim3 block_size(N);
-
-	// Launch Kernel
-	iter << <grid_size, block_size >> > (d_a, d_b, N);
-
-	// Some kind of synchronization
-	cudaDeviceSynchronize();
-
-	cudaMemcpy(h_a, d_a, N * sizeof(int), cudaMemcpyDeviceToHost);
-	cudaMemcpy(h_b, d_b, N * sizeof(int), cudaMemcpyDeviceToHost);
-
-	for (int i = 0; i < 10; ++i) {
-		//		printf("c[%d] = %d\n", i, h_a[i]);
-		//		printf("c[%d] = %d\n", i, h_b[i]);
-		std::cout << "h_a: c[" << i << "] = " << h_a[i] << "\n";
-		std::cout << "h_b: c[" << i << "] = " << h_b[i] << "\n";
-	}
-
-	free(h_a);
-	free(h_b);
-	cudaFree(d_a);
-	cudaFree(d_b);
-
-	//	return 0;
-}
-*/
