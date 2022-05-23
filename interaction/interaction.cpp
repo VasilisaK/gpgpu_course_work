@@ -1,8 +1,12 @@
 #include "ParticleSystem.h"
+
+#include <fstream>
+#include <iomanip>
+
 //#include "Functions.h"
 
-#include <../../../opengl/glew.h>
-#include <../../../opengl/freeglut.h>
+// #include <../../../opengl/glew.h>
+// #include <../../../opengl/freeglut.h>
 
 double Time = 200000;
 double CurrTime = 0;
@@ -13,6 +17,12 @@ Geometry Geom;
 // Initializing particle system properties
 // Particle(SourceCoordX_1, SourceCoordY_1, SourceCoordX_2, SourceCoordY_2, dt, LifeTime, BasketLevel, ParticlesInBasketNeeded)
 ParticleSystem PlayingSystem;
+
+std::ofstream OutputFile; //output unit
+char OutputFileName[] = "track1.txt";
+
+std::ofstream OutputFile_2; //output unit
+char OutputFileName_2[] = "track2.txt";
 
 
 void DisplayScene() {
@@ -132,9 +142,12 @@ void DisplayScene() {
 		glDisableClientState(GL_VERTEX_ARRAY);
 
 		glFlush();
-		std::cout << "( " << vertices[0] << ", " << vertices[1] << " )\n";
+//		std::cout << "( " << vertices[0] << ", " << vertices[1] << " )\n";
+//		std::cout << "( " << vertices[2*MAX_PARTICLES] << ", " << vertices[2*MAX_PARTICLES + 1] << " )\n";
+		OutputFile << std::setprecision(8) << std::fixed << vertices[0] << "\t" << std::setprecision(8) << std::fixed << vertices[1] << "\n";
+		OutputFile_2 << std::setprecision(8) << std::fixed << vertices[2 * MAX_PARTICLES] << "\t" << std::setprecision(8) << std::fixed << vertices[2 * MAX_PARTICLES + 1] << "\n";
 
-		std::cout << "Color indexes type1: ( " << PlayingSystem.GetColor()[0] << ", " << PlayingSystem.GetColor()[1] << ", " << PlayingSystem.GetColor()[2] << " )\n";
+//		std::cout << "Color indexes type1: ( " << PlayingSystem.GetColor()[0] << ", " << PlayingSystem.GetColor()[1] << ", " << PlayingSystem.GetColor()[2] << " )\n";
 
 		CurrTime += dt;
 
@@ -162,6 +175,9 @@ void myinit() {
 }
 
 int main(int argc, char** argv) {
+
+	OutputFile.open(OutputFileName);
+	OutputFile_2.open(OutputFileName_2);
 
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);

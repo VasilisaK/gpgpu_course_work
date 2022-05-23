@@ -113,7 +113,7 @@ void ParticleSystem::UpdateSystem(Geometry Geom) {
 
 			ParticlesDist = RDistance(particles[i].GetCoords()[0], particles_type2[j].GetCoords()[0], particles[i].GetCoords()[1], particles_type2[j].GetCoords()[1]);
 
-			if (ParticlesDist <= 1.0) {
+			if (ParticlesDist <= 14.0) {
 
 				tempVx = particles[i].GetVelocity()[0];
 				tempVy = particles[i].GetVelocity()[1];

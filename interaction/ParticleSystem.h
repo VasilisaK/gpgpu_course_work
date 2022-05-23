@@ -2,8 +2,11 @@
 
 #include <stdio.h>
 
-#include <../../../opengl/glew.h>
-#include <../../../opengl/freeglut.h>
+#include <../opengl/glew.h>
+#include <../opengl/freeglut.h>
+
+//#include <../opengl/glew.h>
+//#include <../opengl/freeglut.h>
 
 #include "Particle.h"
 
