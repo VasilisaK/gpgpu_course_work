@@ -57,7 +57,6 @@ void DisplayScene() {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
 
-	Particle* particles;
 
 	// draw a cube
 	glDrawArrays(GL_POINTS, 0, MAX_PARTICLES);
@@ -116,12 +115,6 @@ void DisplayScene() {
 
 		//// deactivate vertex arrays after drawing
 		glDisableClientState(GL_VERTEX_ARRAY);
-
-		PlayingSystem.GetParticles(particles);
-
-		Calc(particles);
-
-		PlayingSystem.SetParticles(particles);
 
 		PlayingSystem.UpdateSystem(Geom);
 

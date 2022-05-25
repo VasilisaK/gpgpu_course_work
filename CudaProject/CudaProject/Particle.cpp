@@ -66,6 +66,18 @@ Geometry::Geometry() {
 
 }
 
+Geometry::Geometry(const Geometry& g) {
+	int Counter = CoordRight.size();
+	for (int i = 0; i < Counter; ++i) {
+		CoordLeft[i][0] = g.CoordLeft[i][0];
+		CoordLeft[i][1] = g.CoordLeft[i][1];
+		CoordRight[i][0] = g.CoordRight[i][0];
+		CoordRight[i][1] = g.CoordRight[i][1];
+		JFaceVector[i][0] = g.JFaceVector[i][0];
+		JFaceVector[i][1] = g.JFaceVector[i][1];
+	}
+}
+
 Geometry::~Geometry() {
 }
 
@@ -164,11 +176,14 @@ void Particle::UpdateParticle(double x_m1, double y_m1, Geometry Geom_inp, doubl
 
 }
 
-std::vector<double> Particle::GetCoords() {
-	std::vector<double> Coords(2);
-	Coords[0] = XCoord;
-	Coords[1] = YCoord;
-	return Coords;
+Coords Particle::GetCoords() {
+	Coords coords;
+	coords.x = XCoord;
+	coords.y = YCoord;
+	coords.Vx = VX;
+	coords.Vy = VY;
+	coords.Life = Lifetime;
+	return coords;
 }
 
 std::vector<double> Particle::GetVelocity() {

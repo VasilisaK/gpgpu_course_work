@@ -10,6 +10,7 @@
 
 #include "Particle.h"
 
+#include "kernel.cuh"
 
 #define MAX_PARTICLES 20
 
@@ -40,5 +41,6 @@ public:
 	int GetBasketCounter() { return BasketCounter; };
 	void GetParticles(Particle* p);
 	void SetParticles(Particle* p);
+//	void Calc(Particle* h_a, Geometry g, int n);
 };
 

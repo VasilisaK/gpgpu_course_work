@@ -7,10 +7,13 @@
 #include<iostream>
 #include <cuda.h>
 
+#include <curand.h>
+#include <curand_kernel.h>
+
 #include "kernel.cuh"
 
 #include "ParticleSystem.h"
-
+#include "Particle.h"
 
 // Kernel Definition
 __global__ void iter(Particle* p, Geometry g, int n)
@@ -23,36 +26,45 @@ __global__ void iter(Particle* p, Geometry g, int n)
 	double dt = 1;
 	int BasketCounter = 0;
 
+	Coords coords;
+
+	curandState_t state;
+	double numb;
+	double RANGE = 1;
+
 	int i = blockDim.x * blockIdx.x + threadIdx.x;
 
 	if (i < n) {
 		
-
-		NewXCoord = p[i].GetCoords()[0] + p[i].GetVelocity()[0] * dt;
-		NewYCoord = p[i].GetCoords()[1] + p[i].GetVelocity()[1] * dt;
-		NewVX = p[i].GetVelocity()[0];
-		NewVY = p[i].GetVelocity()[1];
+		coords = p[i].GetCoords();
+		NewXCoord = coords.x + coords.Vx * dt;
+		NewYCoord = coords.y + coords.Vy * dt;
+		NewVX = coords.Vx;
+		NewVY = coords.Vy;
 
 		p[i].UpdateParticle(NewXCoord, NewYCoord, g, dt);
 
-		if (p[i].GetLifetime() <= 0)
-			p[i].UpdateLifeStatus(SourceCoordX_1, SourceCoordY_1, 0.01 * (rand() % 101), 0.01 * (rand() % 101), 0, 0.01 * (rand() % 101), 0, Life);
+		if (coords.y <= 0) {
+			numb = (double)((curand_uniform(&state)*(RANGE+1)));
+			p[i].UpdateLifeStatus(SourceCoordX_1, SourceCoordY_1, numb, numb, 0, numb, 0, Life);
+		}
 
-		if (p[i].GetCoords()[1] > BasketLevel) {
+		if (coords.y > BasketLevel) {
 			BasketCounter += 1;
-			p[i].UpdateLifeStatus(SourceCoordX_1, SourceCoordY_1, 0.01 * (rand() % 101), 0.01 * (rand() % 101), 0, 0.01 * (rand() % 101), 0, Life);
+			numb = (double)((curand_uniform(&state) * (RANGE + 1)));
+			p[i].UpdateLifeStatus(SourceCoordX_1, SourceCoordY_1, numb, numb, 0, numb, 0, Life);
 		}
 
 
 	}
 }
 
-void Calc(Particle* h_a, Geometry g, int n) {
+void Particle::Calc(Particle* h_a, Geometry g, int n) {
 
 	int i, j;
 	double NewXCoord, NewYCoord, NewVX, NewVY;
 
-	Geometry geom;
+//	Geometry geom;
 
 	// Allocate host memory
 
@@ -60,6 +72,7 @@ void Calc(Particle* h_a, Geometry g, int n) {
 
 	// Allocate arrays in Device memory
 	Particle* d_a;
+
 	size_t size= BLOCKS_NUMBER*THREADS_NUMBER*sizeof(Particle);
 
 	cudaMalloc(&d_a, size);
@@ -70,9 +83,9 @@ void Calc(Particle* h_a, Geometry g, int n) {
 
 	// Block and Grid dimentions
 	
-	iter<<<BLOCKS_NUMBER,THREADS_NUMBER>>>(dev_classarray);
+	iter<<<BLOCKS_NUMBER,THREADS_NUMBER>>>(d_a, g, n);
 	// Launch Kernel
-	iter << <grid_size, block_size >> > (d_a, g, n);
+//	iter << <grid_size, block_size >> > (d_a, g, n);
 
 	// Some kind of synchronization
 	cudaDeviceSynchronize();
@@ -83,5 +96,4 @@ void Calc(Particle* h_a, Geometry g, int n) {
 //	free(h_a);
 	cudaFree(d_a);
 
-	//	return 0;
 }

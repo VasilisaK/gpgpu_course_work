@@ -84,14 +84,16 @@
     <CudaCompile Include="kernel.cu" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Coords.cpp" />
     <ClCompile Include="Functions.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Coords.h" />
     <ClInclude Include="Functions.h" />
-    <ClInclude Include="kernel.cuh" />
+    <CudaCompile Include="kernel.cuh" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleSystem.h" />
   </ItemGroup>
