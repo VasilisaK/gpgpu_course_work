@@ -3,82 +3,92 @@
 
 Geometry::Geometry() {
 
-	pointsCounter = 8;
 	int i;
-	std::vector<double> r(2);
+	double rX;
+	double rY;
 
-	CoordLeft.resize(pointsCounter);
-	for (i = 0; i < CoordLeft.size(); ++i)
-		CoordLeft[i].resize(2);
-	CoordRight.resize(pointsCounter);
-	for (i = 0; i < CoordRight.size(); ++i)
-		CoordRight[i].resize(2);
-	JFaceVector.resize(pointsCounter);
-	for (i = 0; i < JFaceVector.size(); ++i)
-		JFaceVector[i].resize(2);
+	CoordLeftX[0] = 0;
+	CoordLeftX[1] = 200;
+	CoordLeftX[2] = 350;
+	CoordLeftX[3] = 450;
+	CoordLeftX[4] = 450;
+	CoordLeftX[5] = 550;
+	CoordLeftX[6] = 600;
+	CoordLeftX[7] = 650;
 
-	CoordLeft[0][0] = 0;
-	CoordLeft[1][0] = 200;
-	CoordLeft[2][0] = 350;
-	CoordLeft[3][0] = 450;
-	CoordLeft[4][0] = 450;
-	CoordLeft[5][0] = 550;
-	CoordLeft[6][0] = 600;
-	CoordLeft[7][0] = 650;
+	CoordLeftY[0] = 200;
+	CoordLeftY[1] = 400;
+	CoordLeftY[2] = 400;
+	CoordLeftY[3] = 600;
+	CoordLeftY[4] = 400;
+	CoordLeftY[5] = 400;
+	CoordLeftY[6] = 250;
+	CoordLeftY[7] = 400;
 
-	CoordLeft[0][1] = 200;
-	CoordLeft[1][1] = 400;
-	CoordLeft[2][1] = 400;
-	CoordLeft[3][1] = 600;
-	CoordLeft[4][1] = 400;
-	CoordLeft[5][1] = 400;
-	CoordLeft[6][1] = 250;
-	CoordLeft[7][1] = 400;
+	CoordRightX[0] = 200;
+	CoordRightX[1] = 350;
+	CoordRightX[2] = 350;
+	CoordRightX[3] = 450;
+	CoordRightX[4] = 550;
+	CoordRightX[5] = 600;
+	CoordRightX[6] = 650;
+	CoordRightX[7] = 800;
 
-	CoordRight[0][0] = 200;
-	CoordRight[1][0] = 350;
-	CoordRight[2][0] = 350;
-	CoordRight[3][0] = 450;
-	CoordRight[4][0] = 550;
-	CoordRight[5][0] = 600;
-	CoordRight[6][0] = 650;
-	CoordRight[7][0] = 800;
+	CoordRightY[0] = 400;
+	CoordRightY[1] = 400;
+	CoordRightY[2] = 600;
+	CoordRightY[3] = 400;
+	CoordRightY[4] = 400;
+	CoordRightY[5] = 250;
+	CoordRightY[6] = 400;
+	CoordRightY[7] = 400;
 
-	CoordRight[0][1] = 400;
-	CoordRight[1][1] = 400;
-	CoordRight[2][1] = 600;
-	CoordRight[3][1] = 400;
-	CoordRight[4][1] = 400;
-	CoordRight[5][1] = 250;
-	CoordRight[6][1] = 400;
-	CoordRight[7][1] = 400;
-
-	for (i = 0; i < CoordRight.size(); ++i) {
+	for (i = 0; i < pointsCounter; ++i) {
 
 
-		r[0] = CoordRight[i][0] - CoordLeft[i][0]; // r = vector from one node to another
-		r[1] = CoordRight[i][1] - CoordLeft[i][1];
+		rX = CoordRightX[i] - CoordLeftX[i]; // r = vector from one node to another
+		rY = CoordRightY[i] - CoordLeftY[i];
 
-		JFaceVector[i][0] = -r[1]; // JFaceVector = r rotated on -90 degree
-		JFaceVector[i][1] = r[0]; // JFaceVector directed to increasing J - index
+		JFaceVectorX[i] = -rY; // JFaceVector = r rotated on -90 degree
+		JFaceVectorY[i] = rX; // JFaceVector directed to increasing J - index
 
 	}
 
 }
 
 Geometry::Geometry(const Geometry& g) {
-	int Counter = CoordRight.size();
-	for (int i = 0; i < Counter; ++i) {
-		CoordLeft[i][0] = g.CoordLeft[i][0];
-		CoordLeft[i][1] = g.CoordLeft[i][1];
-		CoordRight[i][0] = g.CoordRight[i][0];
-		CoordRight[i][1] = g.CoordRight[i][1];
-		JFaceVector[i][0] = g.JFaceVector[i][0];
-		JFaceVector[i][1] = g.JFaceVector[i][1];
+
+	for (int i = 0; i < pointsCounter; ++i) {
+		CoordLeftX[i] = g.CoordLeftX[i];
+		CoordLeftY[i] = g.CoordLeftY[i];
+		CoordRightX[i] = g.CoordRightX[i];
+		CoordRightY[i] = g.CoordRightY[i];
+		JFaceVectorX[i] = g.JFaceVectorX[i];
+		JFaceVectorY[i] = g.JFaceVectorY[i];
 	}
 }
 
 Geometry::~Geometry() {
+}
+
+ParticleParams::ParticleParams() {
+	x = 0;
+	y = 0;
+	Vx = 0;
+	Vy = 0;
+	Life = 0;
+}
+
+ParticleParams::ParticleParams(const ParticleParams& c) {
+	x = c.x;
+	y = c.y;
+	Vx = c.Vx;
+	Vy = c.Vy;
+	Life = c.Life;
+}
+
+ParticleParams::~ParticleParams() {
+
 }
 
 Particle::Particle() {
@@ -118,50 +128,50 @@ void Particle::UpdateLifeStatus(double XCoord_inp, double YCoord_inp, double VX_
 void Particle::UpdateParticle(double x_m1, double y_m1, Geometry Geom_inp, double timestep) {
 
 	double x_m, y_m, u_m, v_m, d, Vn, Vtau;
-	std::vector<double> CrossCoords(2);
-	std::vector<double> NewCoords(2);
-	std::vector<double> nv(2);
-	std::vector<double> tv(2);
+	CrossPoint CrossCoords;
+	TrueCoords NewCoords;
+	double nvX, nvY;
+	double tvX, tvY;
 
 	x_m = XCoord;
 	y_m = YCoord;
 	u_m = VX;
 	v_m = VY;
 	int counter = 0;
-	double Icr1 = 0;
+	int Icr1 = 0;
 	int i = 0;
 	double eps = 1e-6;
 
 
-	while ((counter < Geom_inp.pointsCounter) && (Icr1 == 0)) {
+	while ((counter < pointsCounter) && (Icr1 == 0)) {
 
-		CrossCoords = Cross(x_m, y_m, x_m1, y_m1, Geom_inp.CoordLeft[counter][0], Geom_inp.CoordLeft[counter][1], Geom_inp.CoordRight[counter][0], Geom_inp.CoordRight[counter][1]);
+		CrossCoords = Cross(x_m, y_m, x_m1, y_m1, Geom_inp.CoordLeftX[counter], Geom_inp.CoordLeftY[counter], Geom_inp.CoordRightX[counter], Geom_inp.CoordRightY[counter]);
 
-		Icr1 = CrossCoords[2];
+		Icr1 = CrossCoords.Icr;
 
 		if (Icr1 == 1) {
 
 
-			if (abs(x_m1 - CrossCoords[0]) < eps && abs(y_m1 - CrossCoords[1]) < eps) {
+			if (abs(x_m1 - CrossCoords.CrossPointX) < eps && abs(y_m1 - CrossCoords.CrossPointY) < eps) {
 				x_m1 += VX * 0.01;
 				y_m1 += VY * 0.01;
 			}
 
-			NewCoords = Reflect(x_m, y_m, x_m1, y_m1, Geom_inp.CoordLeft[counter][0], Geom_inp.CoordLeft[counter][1], Geom_inp.CoordRight[counter][0], Geom_inp.CoordRight[counter][1], CrossCoords[0], CrossCoords[1]);
-			XCoord = NewCoords[0];
-			YCoord = NewCoords[1];
+			NewCoords = Reflect(x_m, y_m, x_m1, y_m1, Geom_inp.CoordLeftX[counter], Geom_inp.CoordLeftY[counter], Geom_inp.CoordRightX[counter], Geom_inp.CoordRightY[counter], CrossCoords.CrossPointX, CrossCoords.CrossPointY);
+			XCoord = NewCoords.TrueCoordX;
+			YCoord = NewCoords.TrueCoordY;
 
-			d = RDistance(Geom_inp.JFaceVector[counter][0], 0.0, Geom_inp.JFaceVector[counter][1], 0.0);
-			nv[0] = -Geom_inp.JFaceVector[counter][0] / d;
-			nv[1] = -Geom_inp.JFaceVector[counter][1] / d;
-			tv[0] = -nv[1];
-			tv[1] = nv[0];
+			d = RDistance(Geom_inp.JFaceVectorX[counter], 0.0, Geom_inp.JFaceVectorY[counter], 0.0);
+			nvX = -Geom_inp.JFaceVectorX[counter] / d;
+			nvY = -Geom_inp.JFaceVectorY[counter] / d;
+			tvX = -nvY;
+			tvY = nvX;
 
-			Vn = u_m * nv[0] + v_m * nv[1];
-			Vtau = u_m * tv[0] + v_m * tv[1];
+			Vn = u_m * nvX + v_m * nvY;
+			Vtau = u_m * tvX + v_m * tvY;
 
-			VX = Vtau * tv[0] - Vn * nv[0];
-			VY = Vtau * tv[1] - Vn * nv[1];
+			VX = Vtau * tvX - Vn * nvX;
+			VY = Vtau * tvY - Vn * nvY;
 
 		}
 		else {
@@ -176,35 +186,19 @@ void Particle::UpdateParticle(double x_m1, double y_m1, Geometry Geom_inp, doubl
 
 }
 
-Coords Particle::GetCoords() {
-	Coords coords;
-	coords.x = XCoord;
-	coords.y = YCoord;
-	coords.Vx = VX;
-	coords.Vy = VY;
-	coords.Life = Lifetime;
-	return coords;
-}
-
-std::vector<double> Particle::GetVelocity() {
-	std::vector<double> Vel(2);
-	Vel[0] = VX;
-	Vel[1] = VY;
-	return Vel;
-}
-
-double Particle::GetLifetime() {
-	return Lifetime;
+ParticleParams Particle::GetParams() {
+	ParticleParams params;
+	params.x = XCoord;
+	params.y = YCoord;
+	params.Vx = VX;
+	params.Vy = VY;
+	params.Life = Lifetime;
+	return params;
 }
 
 void Particle::SetVelocity(double VX_inp, double VY_inp) {
 	VX = VX_inp;
 	VY = VY_inp;
-}
-
-void Particle::SetCoord(double XCoord_inp, double YCoord_inp) {
-	XCoord = XCoord_inp;
-	YCoord = YCoord_inp;
 }
 
 Particle::~Particle() {

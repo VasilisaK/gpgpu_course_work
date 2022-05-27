@@ -1,15 +1,42 @@
 #include "Functions.h"
 
+CrossPoint::CrossPoint() {
+	CrossPointX = 0;
+	CrossPointY = 0;
+	Icr = 0;
+}
 
-std::vector<double> Cross(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
+CrossPoint::CrossPoint(CrossPoint& point) {
+	CrossPointX = point.CrossPointX;
+	CrossPointY = point.CrossPointY;
+	Icr = point.Icr;
+}
+
+CrossPoint::~CrossPoint() {
+}
+
+TrueCoords::TrueCoords() {
+	TrueCoordX = 0;
+	TrueCoordY = 0;
+}
+
+TrueCoords::TrueCoords(TrueCoords& coords) {
+	TrueCoordX = coords.TrueCoordX;
+	TrueCoordY = coords.TrueCoordY;
+}
+
+TrueCoords::~TrueCoords() {
+}
+
+CrossPoint Cross(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4) {
 
 	double a1, a2, b1, b2;
-	std::vector<double> CrossCoords(3);
+	CrossPoint point;
 	double eps = 1.0e-5;
 	double x_cross = -900000.0;
 	double y_cross = -900000.0;
 	int pr = 0;
-	double Icr;
+	int Icr;
 
 	if (abs(x1 - x2) >= eps && abs(x3 - x4) >= eps) {
 		a1 = (y2 - y1) / (x2 - x1);
@@ -55,20 +82,20 @@ std::vector<double> Cross(double x1, double y1, double x2, double y2, double x3,
 		}
 	}
 
-	CrossCoords[0] = x_cross;
-	CrossCoords[1] = y_cross;
-	CrossCoords[2] = Icr;
+	point.CrossPointX = x_cross;
+	point.CrossPointY = y_cross;
+	point.Icr = Icr;
 
-	return CrossCoords;
+	return point;
 
 }
 
-std::vector<double> Reflect(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4, double Xcross, double Ycross) {
+TrueCoords Reflect(double x1, double y1, double x2, double y2, double x3, double y3, double x4, double y4, double Xcross, double Ycross) {
 
 	double x2_new, y2_new;
 	double a, b, ap, bp, xp, yp, eps;
 
-	std::vector<double> NewCoords(2);
+	TrueCoords NewCoords;
 
 	eps = 1e-8;
 
@@ -94,8 +121,8 @@ std::vector<double> Reflect(double x1, double y1, double x2, double y2, double x
 	x2_new = 2.0 * xp - x2;
 	y2_new = 2.0 * yp - y2;
 
-	NewCoords[0] = x2_new;
-	NewCoords[1] = y2_new;
+	NewCoords.TrueCoordX = x2_new;
+	NewCoords.TrueCoordY = y2_new;
 
 	return NewCoords;
 }

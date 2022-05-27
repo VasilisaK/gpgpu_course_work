@@ -1,6 +1,6 @@
 #include "ParticleSystem.h"
 #include "Functions.h"
-#include "kernel.cuh"
+// #include "kernel.cuh"
 
 
 ParticleSystem::ParticleSystem() {
@@ -70,17 +70,17 @@ void ParticleSystem::UpdateSystem(Geometry Geom) {
 	// Checking wall interaction for 1st-type particles
 	for (i = 0; i < MAX_PARTICLES; ++i) {
 
-		NewXCoord = particles[i].GetCoords()[0] + particles[i].GetVelocity()[0] * dt;
-		NewYCoord = particles[i].GetCoords()[1] + particles[i].GetVelocity()[1] * dt;
-		NewVX = particles[i].GetVelocity()[0];
-		NewVY = particles[i].GetVelocity()[1];
+		NewXCoord = particles[i].GetParams().x + particles[i].GetParams().Vx * dt;
+		NewYCoord = particles[i].GetParams().y + particles[i].GetParams().Vy * dt;
+		NewVX = particles[i].GetParams().Vx;
+		NewVY = particles[i].GetParams().Vy;
 
 		particles[i].UpdateParticle(NewXCoord, NewYCoord, Geom, dt);
 
-		if (particles[i].GetLifetime() <= 0)
+		if (particles[i].GetParams().Life <= 0)
 			particles[i].UpdateLifeStatus(SourceCoordX_1, SourceCoordY_1, 0.01 * (rand() % 101), 0.01 * (rand() % 101), 0, 0.01 * (rand() % 101), 0, Life);
 			
-		if (particles[i].GetCoords()[1] > BasketLevel) {
+		if (particles[i].GetParams().y > BasketLevel) {
 			BasketCounter += 1;
 			particles[i].UpdateLifeStatus(SourceCoordX_1, SourceCoordY_1, 0.01 * (rand() % 101), 0.01 * (rand() % 101), 0, 0.01 * (rand() % 101), 0, Life);
 		}
@@ -88,21 +88,22 @@ void ParticleSystem::UpdateSystem(Geometry Geom) {
 	}
 */
 
-	particles[0].Calc(particles, Geom, MAX_PARTICLES);
+	Calc(particles, Geom, MAX_PARTICLES);
+	
 	// Checking wall interaction for 2nd-type particles
 	for (i = 0; i < MAX_PARTICLES; ++i) {
 
-		NewXCoord_2 = particles_type2[i].GetCoords()[0] + particles_type2[i].GetVelocity()[0] * dt;
-		NewYCoord_2 = particles_type2[i].GetCoords()[1] + particles_type2[i].GetVelocity()[1] * dt;
-		NewVX_2 = particles_type2[i].GetVelocity()[0];
-		NewVY_2 = particles_type2[i].GetVelocity()[1];
+		NewXCoord_2 = particles_type2[i].GetParams().x + particles_type2[i].GetParams().Vx * dt;
+		NewYCoord_2 = particles_type2[i].GetParams().y + particles_type2[i].GetParams().Vy * dt;
+		NewVX_2 = particles_type2[i].GetParams().Vx;
+		NewVY_2 = particles_type2[i].GetParams().Vy;
 
 		particles_type2[i].UpdateParticle(NewXCoord_2, NewYCoord_2, Geom, dt);
 
-		if (particles_type2[i].GetLifetime() <= 0)
+		if (particles_type2[i].GetParams().Life <= 0)
 			particles_type2[i].UpdateLifeStatus(SourceCoordX_2, SourceCoordY_2, 0.01 * (rand() % 101), 0.01 * (rand() % 101), 0, 0, 0.01 * (rand() % 101), Life);
 
-		if (particles_type2[i].GetCoords()[1] > BasketLevel) {
+		if (particles_type2[i].GetParams().y > BasketLevel) {
 			BasketCounter += 1;
 			particles_type2[i].UpdateLifeStatus(SourceCoordX_2, SourceCoordY_2, 0.01 * (rand() % 101), 0.01 * (rand() % 101), 0, 0, 0.01 * (rand() % 101), Life);
 		}
@@ -114,14 +115,14 @@ void ParticleSystem::UpdateSystem(Geometry Geom) {
 
 		for (j = 0; j < MAX_PARTICLES; ++j) {
 
-			ParticlesDist = RDistance(particles[i].GetCoords()[0], particles_type2[j].GetCoords()[0], particles[i].GetCoords()[1], particles_type2[j].GetCoords()[1]);
+			ParticlesDist = RDistance(particles[i].GetParams().x, particles_type2[j].GetParams().x, particles[i].GetParams().y, particles_type2[j].GetParams().y);
 
 			if (ParticlesDist <= 14.0) {
 
-				tempVx = particles[i].GetVelocity()[0];
-				tempVy = particles[i].GetVelocity()[1];
+				tempVx = particles[i].GetParams().Vx;
+				tempVy = particles[i].GetParams().Vy;
 
-				particles[i].SetVelocity(particles_type2[j].GetVelocity()[0], particles_type2[j].GetVelocity()[1]);
+				particles[i].SetVelocity(particles_type2[j].GetParams().Vx, particles_type2[j].GetParams().Vy);
 				particles_type2[j].SetVelocity(tempVx, tempVy);
 
 			}
@@ -131,6 +132,16 @@ void ParticleSystem::UpdateSystem(Geometry Geom) {
 
 }
 
+void ParticleSystem::GetSystem(GLfloat* vertices) {
+	for (int i = 0; i < MAX_PARTICLES; ++i) {
+		vertices[i * 2] = float(particles[i].GetParams().x);
+		vertices[i * 2 + 1] = float(particles[i].GetParams().y);
+		vertices[2 * MAX_PARTICLES + i * 2] = float(particles_type2[i].GetParams().x);
+		vertices[2 * MAX_PARTICLES + i * 2 + 1] = float(particles_type2[i].GetParams().y);
+	}
+}
+
+/*
 std::vector<double> ParticleSystem::GetColor() {
 	std::vector<double> Colors(6);
 	Colors[0] = Red_1;
@@ -142,14 +153,7 @@ std::vector<double> ParticleSystem::GetColor() {
 	return Colors;
 }
 
-void ParticleSystem::GetSystem(GLfloat* vertices) {
-	for (int i = 0; i < MAX_PARTICLES; ++i) {
-		vertices[i * 2] = float(particles[i].GetCoords()[0]);
-		vertices[i * 2 + 1] = float(particles[i].GetCoords()[1]);
-		vertices[2 * MAX_PARTICLES + i * 2] = float(particles_type2[i].GetCoords()[0]);
-		vertices[2 * MAX_PARTICLES + i * 2 + 1] = float(particles_type2[i].GetCoords()[1]);
-	}
-}
+
 
 void ParticleSystem::GetParticles(Particle* p) {
 	for (int i = 0; i < MAX_PARTICLES; ++i)
@@ -160,7 +164,7 @@ void ParticleSystem::SetParticles(Particle* p) {
 	for (int i = 0; i < MAX_PARTICLES; ++i)
 		particles[i] = p[i];
 }
-
+*/
 
 ParticleSystem::~ParticleSystem() {
 }

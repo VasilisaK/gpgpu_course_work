@@ -35,12 +35,8 @@ public:
 	void InitSystem(double Vx, double Vy, float r_1_inp, float g_1_inp, float b_1_inp, double Life_1_inp, float r_2_inp, float g_2_inp, float b_2_inp, double Life_2_inp);
 	void UpdateSystem(Geometry Geom);
 	void GetSystem(GLfloat* vertices);
-	std::vector<double> GetColor();
 	double GetLifetime() { return Life; };
 	int GetParticlesInBasketNeeded(){ return ParticlesInBasketNeeded; };
 	int GetBasketCounter() { return BasketCounter; };
-	void GetParticles(Particle* p);
-	void SetParticles(Particle* p);
-//	void Calc(Particle* h_a, Geometry g, int n);
 };
 

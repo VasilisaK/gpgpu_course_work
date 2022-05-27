@@ -12,7 +12,7 @@
 
 #include "kernel.cuh"
 
-#include "ParticleSystem.h"
+//#include "ParticleSystem.h"
 #include "Particle.h"
 
 // Kernel Definition
@@ -26,7 +26,7 @@ __global__ void iter(Particle* p, Geometry g, int n)
 	double dt = 1;
 	int BasketCounter = 0;
 
-	Coords coords;
+	ParticleParams params;
 
 	curandState_t state;
 	double numb;
@@ -36,20 +36,20 @@ __global__ void iter(Particle* p, Geometry g, int n)
 
 	if (i < n) {
 		
-		coords = p[i].GetCoords();
-		NewXCoord = coords.x + coords.Vx * dt;
-		NewYCoord = coords.y + coords.Vy * dt;
-		NewVX = coords.Vx;
-		NewVY = coords.Vy;
+		params = p[i].GetParams();
+		NewXCoord = params.x + params.Vx * dt;
+		NewYCoord = params.y + params.Vy * dt;
+		NewVX = params.Vx;
+		NewVY = params.Vy;
 
 		p[i].UpdateParticle(NewXCoord, NewYCoord, g, dt);
 
-		if (coords.y <= 0) {
+		if (params.y <= 0) {
 			numb = (double)((curand_uniform(&state)*(RANGE+1)));
 			p[i].UpdateLifeStatus(SourceCoordX_1, SourceCoordY_1, numb, numb, 0, numb, 0, Life);
 		}
 
-		if (coords.y > BasketLevel) {
+		if (params.y > BasketLevel) {
 			BasketCounter += 1;
 			numb = (double)((curand_uniform(&state) * (RANGE + 1)));
 			p[i].UpdateLifeStatus(SourceCoordX_1, SourceCoordY_1, numb, numb, 0, numb, 0, Life);
@@ -59,7 +59,7 @@ __global__ void iter(Particle* p, Geometry g, int n)
 	}
 }
 
-void Particle::Calc(Particle* h_a, Geometry g, int n) {
+void Calc(Particle* h_a, Geometry g, int n) {
 
 	int i, j;
 	double NewXCoord, NewYCoord, NewVX, NewVY;

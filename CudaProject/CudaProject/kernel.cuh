@@ -9,9 +9,6 @@
 #include <curand.h>
 #include <curand_kernel.h>
 
-#include "ParticleSystem.h"
-#include "Particle.h"
-
 #define THREADS_NUMBER 2
 #define BLOCKS_NUMBER 1
 
