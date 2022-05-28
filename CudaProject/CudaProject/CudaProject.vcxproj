@@ -85,13 +85,13 @@
     <CudaCompile Include="Functions.cpp" />
     <ClCompile Include="main.cpp" />
     <CudaCompile Include="Particle.cpp" />
-    <ClCompile Include="ParticleSystem.cpp" />
+    <CudaCompile Include="ParticleSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="kernel.cuh" />
     <CudaCompile Include="Functions.h" />
     <CudaCompile Include="Particle.h" />
-    <ClInclude Include="ParticleSystem.h" />
+    <CudaCompile Include="ParticleSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="kernel.cu" />

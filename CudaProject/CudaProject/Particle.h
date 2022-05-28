@@ -51,6 +51,6 @@ public:
 	__device__ __host__ void SetVelocity(double VX_inp, double VY_inp);
 };
 
-void Calc(Particle* h_a, Geometry g, int n);
-
+void Calc(Particle* h_a, Particle* h_b, Geometry g, int n);
+void Calc2(Particle* h_a, Particle* h_b, int n);
 

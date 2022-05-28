@@ -6,7 +6,7 @@
 
 double Time = 200000;
 double CurrTime = 0;
-double dt = 1;
+double dt = 0.3;
 
 Geometry Geom;
 
@@ -163,11 +163,11 @@ void myinit() {
 	glLoadIdentity();
 	gluOrtho2D(0.0, 800.0, 600.0, 0.0);
 
-	PlayingSystem = ParticleSystem(200, 100, 600, 100, dt, 1000, 400, 20);
+	PlayingSystem = ParticleSystem(300, 100, 500, 100, dt, 10000, 400, 20);
 
 	// Initialize particle system
 	// InitSystem(Vx_magnitude, Vy_magnitude, Red_1, Green_1, Blue_1, LifeTime_1, Red_2, Green_2, Blue_2, LifeTime_2)
-	PlayingSystem.InitSystem(1.0, 1.0, 0, 1, 0, 1000, 0, 0, 1, 1000);
+	PlayingSystem.InitSystem(1.0, 1.0, 0, 1, 0, 10000, 0, 0, 1, 10000);
 
 }
 

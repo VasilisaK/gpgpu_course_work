@@ -86,10 +86,10 @@ void ParticleSystem::UpdateSystem(Geometry Geom) {
 		}
 
 	}
-*/
 
-	Calc(particles, Geom, MAX_PARTICLES);
-	
+
+	Calc(particles, particles_type2,  Geom, MAX_PARTICLES);
+
 	// Checking wall interaction for 2nd-type particles
 	for (i = 0; i < MAX_PARTICLES; ++i) {
 
@@ -109,7 +109,10 @@ void ParticleSystem::UpdateSystem(Geometry Geom) {
 		}
 			
 	}
-
+*/
+	Calc(particles, particles_type2, Geom, MAX_PARTICLES);
+	Calc2(particles, particles_type2, MAX_PARTICLES);
+/*
 	// Checking particle-particle interaction
 	for (i = 0; i < MAX_PARTICLES; ++i) {
 
@@ -128,7 +131,7 @@ void ParticleSystem::UpdateSystem(Geometry Geom) {
 			}
 		}
 	}
-
+*/
 
 }
 
@@ -141,30 +144,37 @@ void ParticleSystem::GetSystem(GLfloat* vertices) {
 	}
 }
 
-/*
-std::vector<double> ParticleSystem::GetColor() {
-	std::vector<double> Colors(6);
-	Colors[0] = Red_1;
-	Colors[1] = Green_1;
-	Colors[2] = Blue_1;
-	Colors[3] = Red_2;
-	Colors[4] = Green_2;
-	Colors[5] = Blue_2;
-	return Colors;
-}
-
-
-
-void ParticleSystem::GetParticles(Particle* p) {
-	for (int i = 0; i < MAX_PARTICLES; ++i)
-		p[i] = particles[i];
-}
-
-void ParticleSystem::SetParticles(Particle* p) {
-	for (int i = 0; i < MAX_PARTICLES; ++i)
-		particles[i] = p[i];
-}
-*/
 
 ParticleSystem::~ParticleSystem() {
 }
+
+/*
+SystemParams ParticleSystem::GetParams() {
+	SystemParams psys;
+	psys.SourceCoordX_1 = SourceCoordX_1;
+	psys.SourceCoordY_1 = SourceCoordY_1;
+	psys.SourceCoordX_2 = SourceCoordX_2;
+	psys.SourceCoordY_2 = SourceCoordY_2;
+	psys.dt = dt;
+	psys.Life = Life;
+	psys.BasketLevel = BasketLevel;
+	psys.ParticlesInBasketNeeded = ParticlesInBasketNeeded;
+	psys.BasketCounter = BasketCounter;
+	return psys;
+}
+
+SystemParams::SystemParams(){
+	SourceCoordX_1 = 0;
+	SourceCoordY_1 = 0;
+	SourceCoordX_2 = 0;
+	SourceCoordY_2 = 0;
+	dt = 0;
+	Life = 0;
+	BasketLevel = 0;
+	ParticlesInBasketNeeded = 0;
+	BasketCounter = 0;
+}
+
+SystemParams::~SystemParams() {
+}
+*/

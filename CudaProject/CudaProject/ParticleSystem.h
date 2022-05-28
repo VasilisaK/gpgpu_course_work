@@ -13,6 +13,21 @@
 #include "kernel.cuh"
 
 #define MAX_PARTICLES 20
+/*
+class SystemParams {
+public:
+	double SourceCoordX_1, SourceCoordY_1;
+	double SourceCoordX_2, SourceCoordY_2;
+	double dt;
+	double Life;
+	double BasketLevel;
+	int ParticlesInBasketNeeded;
+	int BasketCounter;
+	__device__ __host__ SystemParams(const SystemParams& c);
+	__device__ __host__ SystemParams();
+	__device__ __host__ ~SystemParams();
+};
+*/
 
 class ParticleSystem {
 private:
@@ -38,5 +53,7 @@ public:
 	double GetLifetime() { return Life; };
 	int GetParticlesInBasketNeeded(){ return ParticlesInBasketNeeded; };
 	int GetBasketCounter() { return BasketCounter; };
+	void UpdateBasketCounter(int b) { BasketCounter = b; };
+//	__device__ __host__ SystemParams GetParams();
 };
 

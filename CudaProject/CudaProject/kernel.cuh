@@ -9,7 +9,7 @@
 #include <curand.h>
 #include <curand_kernel.h>
 
-#define THREADS_NUMBER 2
+#define THREADS_NUMBER 256
 #define BLOCKS_NUMBER 1
 
 //void Particle::Calc(Particle* h_a, Geometry g, int n);
