@@ -12,7 +12,13 @@ Geometry Geom;
 
 // Initializing particle system properties
 // Particle(SourceCoordX_1, SourceCoordY_1, SourceCoordX_2, SourceCoordY_2, dt, LifeTime, BasketLevel, ParticlesInBasketNeeded)
-ParticleSystem PlayingSystem;
+
+ParticleSystem* PlayingSystem;
+
+void setup() {
+	PlayingSystem = new ParticleSystem();
+}
+
 
 std::ofstream OutputFile; //output unit
 char OutputFileName[] = "track1.txt";
@@ -52,7 +58,7 @@ void DisplayScene() {
 	glEnd();
 
 	GLfloat vertices[4 * MAX_PARTICLES];
-	PlayingSystem.GetSystem(vertices);
+	PlayingSystem->GetSystem(vertices);
 	glColor3f(0.0, 1.0, 0.0);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glVertexPointer(2, GL_FLOAT, 0, vertices);
@@ -116,13 +122,14 @@ void DisplayScene() {
 		//// deactivate vertex arrays after drawing
 		glDisableClientState(GL_VERTEX_ARRAY);
 
-		PlayingSystem.UpdateSystem(Geom);
+//		PlayingSystem.UpdateSystem(Geom);
+		PlayingSystem->UpdateSystemSingle(Geom);
 
-		std::cout << PlayingSystem.GetBasketCounter() << " particles in basket\n";
-		if (PlayingSystem.GetBasketCounter() >= PlayingSystem.GetParticlesInBasketNeeded())
+		std::cout << PlayingSystem->GetBasketCounter() << " particles in basket\n";
+		if (PlayingSystem->GetBasketCounter() >= PlayingSystem->GetParticlesInBasketNeeded())
 			std::cout << "Victory!\n";
 
-		PlayingSystem.GetSystem(vertices);
+		PlayingSystem->GetSystem(vertices);
 		glColor3f(0.0, 1.0, 0.0);
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glVertexPointer(2, GL_FLOAT, 0, vertices);
@@ -163,11 +170,12 @@ void myinit() {
 	glLoadIdentity();
 	gluOrtho2D(0.0, 800.0, 600.0, 0.0);
 
-	PlayingSystem = ParticleSystem(300, 100, 500, 100, dt, 10000, 400, 20);
+	setup();
+	PlayingSystem->SetSystem(300, 100, 500, 100, dt, 10000, 400, 20);	
 
 	// Initialize particle system
 	// InitSystem(Vx_magnitude, Vy_magnitude, Red_1, Green_1, Blue_1, LifeTime_1, Red_2, Green_2, Blue_2, LifeTime_2)
-	PlayingSystem.InitSystem(1.0, 1.0, 0, 1, 0, 10000, 0, 0, 1, 10000);
+	PlayingSystem->InitSystem(1.0, 1.0, 0, 1, 0, 10000, 0, 0, 1, 10000);
 
 }
 

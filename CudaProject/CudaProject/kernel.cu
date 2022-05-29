@@ -59,13 +59,13 @@ __global__ void iter(Particle* p1, Particle* p2, Geometry g, int n)
 		p1[i].UpdateParticle(NewXCoord, NewYCoord, g, dt);
 		if (params1.Life <= 0) {
 			numb = (double)((curand_uniform(&state)*(RANGE+1)));		
-			p1[i].UpdateLifeStatus(SourceCoordX_1, SourceCoordY_1, numb, numb, 0, numb, 0, Life);
+			p1[i].UpdateLifeStatus(SourceCoordX_1, SourceCoordY_1, 0.1, 0.1, 0, 1, 0, Life);
 		}
 
 		if (params1.y > BasketLevel) {
 			BasketCounter += 1;
 			numb = (double)((curand_uniform(&state) * (RANGE + 1)));
-			p1[i].UpdateLifeStatus(SourceCoordX_1, SourceCoordY_1, numb, numb, 0, numb, 0, Life);
+			p1[i].UpdateLifeStatus(SourceCoordX_1, SourceCoordY_1, 0.1, 0.1, 0, 1, 0, Life);
 		}
 
 		params2 = p2[i].GetParams();
@@ -78,13 +78,13 @@ __global__ void iter(Particle* p1, Particle* p2, Geometry g, int n)
 
 		if (params2.Life <= 0) {
 			numb = (double)((curand_uniform(&state) * (RANGE + 1)));
-			p2[i].UpdateLifeStatus(SourceCoordX_2, SourceCoordY_2, numb, numb, 0, numb, 0, Life);
+			p2[i].UpdateLifeStatus(SourceCoordX_2, SourceCoordY_2, 0.1, 0.1, 0, 0, 1, Life);
 		}
 
 		if (params2.y > BasketLevel) {
 			BasketCounter += 1;
 			numb = (double)((curand_uniform(&state) * (RANGE + 1)));
-			p2[i].UpdateLifeStatus(SourceCoordX_2, SourceCoordY_2, numb, numb, 0, numb, 0, Life);
+			p2[i].UpdateLifeStatus(SourceCoordX_2, SourceCoordY_2, 0.1, 0.1, 0, 0, 1, Life);
 		}
 
 	}
