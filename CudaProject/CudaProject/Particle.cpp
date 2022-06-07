@@ -139,7 +139,6 @@ void Particle::UpdateParticle(double x_m1, double y_m1, Geometry Geom_inp, doubl
 	v_m = VY;
 	int counter = 0;
 	int Icr1 = 0;
-	int i = 0;
 	double eps = 1e-6;
 
 

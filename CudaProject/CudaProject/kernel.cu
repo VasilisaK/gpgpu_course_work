@@ -15,6 +15,7 @@
 
 #include "kernel.cuh"
 
+
 //#include "ParticleSystem.h"
 #include "Particle.h"
 #include "Functions.h"
@@ -23,28 +24,17 @@
 // Kernel Definition
 __global__ void iter(Particle* p1, Particle* p2, Geometry g, int n)
 {
-	double NewXCoord, NewYCoord, NewVX, NewVY;
+	double NewXCoord, NewYCoord;
 	double SourceCoordX_1 = 300;
 	double SourceCoordY_1 = 100;
 	double SourceCoordX_2 = 500;
 	double SourceCoordY_2 = 100;
 	double BasketLevel = 400;
 	double Life = 10000;
-	double dt = 0.3;
-	int BasketCounter = 0;
+	double dt = 0.5;
 
 	ParticleParams params1;
 	ParticleParams params2;
-
-	curandState_t state;
-	curand_init(0, 0, 0, &state);
-
-	double numb;
-	int RANGE = 1;
-	int MAX = 101;
-
-//	numb = curand_uniform(&state);
-//	printf("%d\n", numb);
 
 	int i = blockDim.x * blockIdx.x + threadIdx.x;
 
@@ -53,37 +43,27 @@ __global__ void iter(Particle* p1, Particle* p2, Geometry g, int n)
 		params1 = p1[i].GetParams();
 		NewXCoord = params1.x + params1.Vx * dt;
 		NewYCoord = params1.y + params1.Vy * dt;
-		NewVX = params1.Vx;
-		NewVY = params1.Vy;
 
 		p1[i].UpdateParticle(NewXCoord, NewYCoord, g, dt);
-		if (params1.Life <= 0) {
-			numb = (double)((curand_uniform(&state)*(RANGE+1)));		
+		if (params1.Life <= 0) {	
 			p1[i].UpdateLifeStatus(SourceCoordX_1, SourceCoordY_1, 0.1, 0.1, 0, 1, 0, Life);
 		}
 
 		if (params1.y > BasketLevel) {
-			BasketCounter += 1;
-			numb = (double)((curand_uniform(&state) * (RANGE + 1)));
 			p1[i].UpdateLifeStatus(SourceCoordX_1, SourceCoordY_1, 0.1, 0.1, 0, 1, 0, Life);
 		}
 
 		params2 = p2[i].GetParams();
 		NewXCoord = params2.x + params2.Vx * dt;
 		NewYCoord = params2.y + params2.Vy * dt;
-		NewVX = params2.Vx;
-		NewVY = params2.Vy;
 
 		p2[i].UpdateParticle(NewXCoord, NewYCoord, g, dt);
 
 		if (params2.Life <= 0) {
-			numb = (double)((curand_uniform(&state) * (RANGE + 1)));
 			p2[i].UpdateLifeStatus(SourceCoordX_2, SourceCoordY_2, 0.1, 0.1, 0, 0, 1, Life);
 		}
 
 		if (params2.y > BasketLevel) {
-			BasketCounter += 1;
-			numb = (double)((curand_uniform(&state) * (RANGE + 1)));
 			p2[i].UpdateLifeStatus(SourceCoordX_2, SourceCoordY_2, 0.1, 0.1, 0, 0, 1, Life);
 		}
 
@@ -122,6 +102,7 @@ __global__ void iter2(Particle* p1, Particle* p2, int n) {
 
 void Calc(Particle* h_a, Particle* h_b, Geometry g, int n) {
 
+
 	// Allocate host memory
 	// Initialize host array
 
@@ -155,6 +136,7 @@ void Calc(Particle* h_a, Particle* h_b, Geometry g, int n) {
 }
 
 void Calc2(Particle* h_a, Particle* h_b, int n) {
+
 	// Allocate host memory
 // Initialize host array
 

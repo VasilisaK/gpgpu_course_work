@@ -53,4 +53,3 @@ public:
 
 void Calc(Particle* h_a, Particle* h_b, Geometry g, int n);
 void Calc2(Particle* h_a, Particle* h_b, int n);
-
