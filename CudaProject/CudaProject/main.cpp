@@ -172,7 +172,7 @@ void myinit() {
 	gluOrtho2D(0.0, 800.0, 600.0, 0.0);
 
 	setup();
-	PlayingSystem->SetSystem(300, 100, 500, 100, dt, 10000, 400, 20);	
+	PlayingSystem->SetSystem(300, 100, 500, 100, dt, 10000, 400, 100);	
 
 	// Initialize particle system
 	// InitSystem(Vx_magnitude, Vy_magnitude, Red_1, Green_1, Blue_1, LifeTime_1, Red_2, Green_2, Blue_2, LifeTime_2)

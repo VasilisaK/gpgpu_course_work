@@ -47,7 +47,7 @@ ParticleSystem::ParticleSystem() {
 	dt = 0;
 	Life = 0;
 	BasketLevel = 0;
-	ParticlesInBasketNeeded = 0;
+	ParticlesInBasketNeeded = 100;
 	BasketCounter = 0;
 }
 
@@ -113,7 +113,11 @@ void ParticleSystem::UpdateSystem(Geometry Geom) {
 
 	Calc(particles, particles_type2, Geom, MAX_PARTICLES);
 	Calc2(particles, particles_type2, MAX_PARTICLES);
+	BasketCounter = Calc3(particles, particles_type2, MAX_PARTICLES);
 
+	printf("Particles in basket = %d\n", BasketCounter);
+	if (BasketCounter >= ParticlesInBasketNeeded)
+		printf("Victory!\n");
 }
 
 
