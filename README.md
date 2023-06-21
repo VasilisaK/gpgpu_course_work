@@ -5,6 +5,8 @@ Repo for gpgpu course work
 2. Пестряков Данил
 3. Суриков Илья
 
+## Rules
+
 The movement of 10000 particles is calculated on the GPU during the game.
 
 Two sources, each source generates 5000 particles at the beginning of the game at the same time.
@@ -17,4 +19,8 @@ Particles spawn as the lifetime of each of them expires, have a random direction
 The particles are repelled from the walls of geometric objects.
 
 There is a particle counter. The game ends when a certain number of particles, set by the user, falls into the basket and dissappear in it.
+
+## Using
+* Visual Studio 2019 (C++)
+* CUDA 10.2
 
