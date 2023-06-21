@@ -2,9 +2,9 @@
 Repo for gpgpu course work "Particle game"
 
 ## Authors
-1. Кудрявцева Василиса (Vasilisa Kudryavtseva)
-2. Пестряков Данил (Danil Pestryakov)
-3. Суриков Илья (Ilya Surikov)
+1. Кудрявцева Василиса (Vasilisa Kudryavtseva) - VasilisaK
+2. Пестряков Данил (Danil Pestryakov) - DanilPestryakov
+3. Суриков Илья (Ilya Surikov) - surikov98
 
 ## Rules
 
