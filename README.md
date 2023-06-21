@@ -1,9 +1,11 @@
 # Particle Game
-Repo for gpgpu course work
+Repo for gpgpu course work "Particle game"
+
+## Authors
 Команда курсовой работы:
-1. Кудрявцева Василиса
-2. Пестряков Данил
-3. Суриков Илья
+1. Кудрявцева Василиса (Vasilisa Kudryavtseva)
+2. Пестряков Данил (Danil Pestryakov)
+3. Суриков Илья (Ilya Surikov)
 
 ## Rules
 
